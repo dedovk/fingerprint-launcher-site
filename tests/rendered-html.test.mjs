@@ -33,6 +33,9 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, /Download for Windows/);
   assert.match(html, /Your fingerprint never enters FingerprintLauncher/);
   assert.match(html, /fingerprint-launcher-blue\.png/);
+  assert.match(html, /15 actions/);
+  assert.match(html, /Open application or file/);
+  assert.match(html, /HOW TO ADD IT CORRECTLY/);
   assert.match(html, />UA</);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
