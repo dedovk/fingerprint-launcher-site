@@ -22,13 +22,13 @@
 * { box-sizing: border-box; }
 html {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 body {
   margin: 0;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--surface);
   color: var(--ink);
   font-family: var(--font-manrope), "Segoe UI", sans-serif;
@@ -37,15 +37,19 @@ body {
 h1, h2, h3, .brand { font-family: var(--font-space-grotesk), var(--font-manrope), sans-serif; }
 a { color: inherit; text-decoration: none; }
 button { color: inherit; font: inherit; }
-main { overflow: visible; }
+main {
+  overflow: visible;
+  padding-top: 92px;
+}
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 12px;
+  left: 50%;
   z-index: 30;
   width: min(1240px, calc(100% - 48px));
   height: 68px;
-  margin: 12px auto 0;
+  margin: 0;
   padding: 0 17px;
   border: 1px solid rgba(203,216,236,.78);
   border-radius: 17px;
@@ -57,6 +61,7 @@ main { overflow: visible; }
   box-shadow: 0 12px 36px rgba(22,51,93,.08);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
+  transform: translateX(-50%);
   will-change: transform;
 }
 .brand {
@@ -817,12 +822,13 @@ footer a:hover { color: var(--blue); }
     linear-gradient(180deg, #f8fbff 0, var(--surface) 46%, #edf3fc 100%);
 }
 .download-header {
-  position: sticky;
+  position: fixed;
   top: 10px;
+  left: 50%;
   z-index: 40;
   width: min(1160px, calc(100% - 48px));
   min-height: 76px;
-  margin: 10px auto 0;
+  margin: 0;
   padding: 0 14px;
   border: 1px solid rgba(203,216,236,.78);
   border-radius: 17px;
@@ -834,6 +840,7 @@ footer a:hover { color: var(--blue); }
   box-shadow: 0 12px 36px rgba(22,51,93,.08);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
+  transform: translateX(-50%);
   will-change: transform;
 }
 .download-header-actions { display: flex; align-items: center; gap: 22px; }
@@ -1427,8 +1434,9 @@ footer a:hover { color: var(--blue); }
 }
 
 @media (max-width: 620px) {
+  main { padding-top: 78px; }
   .site-header, .hero, .section, .privacy-section, .cta, footer { width: min(100% - 30px, 1240px); }
-  .site-header { top: 8px; height: 62px; margin-top: 8px; padding-inline: 11px; border-radius: 14px; }
+  .site-header { top: 8px; height: 62px; margin-top: 0; padding-inline: 11px; border-radius: 14px; }
   .brand { font-size: 14px; }
   .brand img { width: 34px; height: 34px; }
   .language-switch button { width: 35px; height: 30px; }
@@ -1502,7 +1510,7 @@ footer a:hover { color: var(--blue); }
   .download-header {
     top: 8px;
     min-height: 62px;
-    margin-top: 8px;
+    margin-top: 0;
     padding-inline: 10px;
     border-radius: 14px;
   }
