@@ -20,5 +20,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.85,
     },
+    {
+      url: "https://fingerprint-launcher.com/privacy",
+      lastModified: new Date("2026-07-29"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: "https://fingerprint-launcher.com/help",
+      lastModified: new Date("2026-07-29"),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
   ];
 }

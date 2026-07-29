@@ -594,8 +594,8 @@ export default function Home() {
           <h2>{t.privacyTitle}</h2>
           <p>{t.privacyText}</p>
         </div>
-        <a className="button button-dark" href="https://github.com/dedovk/fingerprint-launcher/blob/main/PRIVACY.md">
-          {t.privacyButton}<SiteIcon name="external" size={18} />
+        <a className="button button-dark" href="/privacy">
+          {t.privacyButton}<SiteIcon name="chevron" size={18} />
         </a>
       </section>
 
@@ -635,7 +635,8 @@ export default function Home() {
           <a href="/releases">{language === "uk" ? "Релізи" : "Releases"}</a>
           <a href="https://github.com/dedovk/fingerprint-launcher">GitHub</a>
           <a href="https://github.com/dedovk/fingerprint-launcher/issues">{t.report}</a>
-          <a href="https://github.com/dedovk/fingerprint-launcher/blob/main/PRIVACY.md">{t.privacy}</a>
+          <a href="/help">{language === "uk" ? "Допомога" : "Help"}</a>
+          <a href="/privacy">{t.privacy}</a>
         </div>
       </footer>
     </main>

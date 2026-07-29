@@ -94,6 +94,26 @@ test("server-renders the synchronized release history", async () => {
   assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
 });
 
+test("server-renders the internal privacy policy", async () => {
+  const response = await render("https://fingerprint-launcher.com/privacy");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Your biometric data stays under Windows/);
+  assert.match(html, /Windows Biometric Framework/);
+  assert.match(html, /%LOCALAPPDATA%/);
+  assert.match(html, /Privacy questions/);
+});
+
+test("server-renders the help center", async () => {
+  const response = await render("https://fingerprint-launcher.com/help");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Set up your first fingerprint routine/);
+  assert.match(html, /Scanner is not detected/);
+  assert.match(html, /activation hotkey/);
+  assert.match(html, /Report an issue/);
+});
+
 test("redirects HTTP and www traffic to the canonical HTTPS origin", async () => {
   const response = await render(
     "http://www.fingerprint-launcher.com/privacy?source=test",
