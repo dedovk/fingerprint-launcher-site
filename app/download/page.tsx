@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { SiteIcon } from "../icons";
 import {
   FALLBACK_RELEASE,
@@ -19,6 +20,7 @@ const copy = {
     lead: "Get the official installer from GitHub Releases and verify the file before installation.",
     download: "Download installer",
     github: "View release on GitHub",
+    releases: "All releases",
     latest: "Latest stable release",
     version: "Version",
     published: "Published",
@@ -52,6 +54,7 @@ const copy = {
     lead: "Отримайте офіційний інсталятор із GitHub Releases і перевірте файл перед встановленням.",
     download: "Завантажити інсталятор",
     github: "Переглянути реліз на GitHub",
+    releases: "Усі релізи",
     latest: "Останній стабільний реліз",
     version: "Версія",
     published: "Опубліковано",
@@ -90,7 +93,7 @@ export default function DownloadPage() {
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem("fl-language");
     if (savedLanguage === "uk" || savedLanguage === "en") {
-      setLanguage(savedLanguage);
+      queueMicrotask(() => setLanguage(savedLanguage));
     }
 
     const controller = new AbortController();
@@ -118,12 +121,12 @@ export default function DownloadPage() {
   return (
     <main className="download-page">
       <header className="download-header">
-        <a className="brand" href="/">
+        <Link className="brand" href="/">
           <img src="/logo.png" alt="" width="38" height="38" />
           <span>FingerprintLauncher</span>
-        </a>
+        </Link>
         <div className="download-header-actions">
-          <a className="back-link" href="/">← {t.back}</a>
+          <Link className="back-link" href="/">← {t.back}</Link>
           <div className="language-switch" aria-label="Language">
             <button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
             <button className={language === "uk" ? "active" : ""} onClick={() => setLanguage("uk")} aria-pressed={language === "uk"}>UA</button>
@@ -166,6 +169,7 @@ export default function DownloadPage() {
           <a className="release-github-link" href={release.releaseUrl}>
             {t.github}<SiteIcon name="external" size={16} />
           </a>
+          <a className="release-history-link" href="/releases">{t.releases} →</a>
         </article>
       </section>
 
@@ -173,7 +177,7 @@ export default function DownloadPage() {
         <article className="checksum-card">
           <div>
             <span className="section-label">{t.checksum}</span>
-            <code>{release.sha256}</code>
+            <code>{release.sha256 || "Not provided in the GitHub release notes"}</code>
           </div>
           <button type="button" onClick={copyChecksum}>
             {copied ? t.copied : t.copy}
@@ -211,4 +215,3 @@ export default function DownloadPage() {
     </main>
   );
 }
-

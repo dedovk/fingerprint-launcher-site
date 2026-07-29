@@ -54,6 +54,7 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//);
   assert.match(html, /Created by Kyrylo Diedov\./);
   assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
+  assert.match(html, /href="\/releases"/);
   assert.match(html, /https:\/\/fingerprint-launcher\.com\//);
   assert.match(html, /\/og\.png/);
   assert.match(html, /favicon-fingerprint-v2\.png/);
@@ -75,6 +76,20 @@ test("server-renders the download and verification page", async () => {
   assert.match(html, /23CA1A0D610A325933F85A37E2D36FD7A0B9BA34C350CA08432F7AE6616A9742/);
   assert.match(html, /Windows Hello-compatible fingerprint reader/);
   assert.match(html, /SmartScreen/);
+  assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
+  assert.match(html, /All releases/);
+});
+
+test("server-renders the synchronized release history", async () => {
+  const response = await render("https://fingerprint-launcher.com/releases");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /Every version, in one place/);
+  assert.match(html, /Automatically synchronized from the official GitHub repository/);
+  assert.match(html, /FingerprintLauncher v1\.0\.0/);
+  assert.match(html, /Release notes/);
+  assert.match(html, /Download installer/);
   assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
 });
 

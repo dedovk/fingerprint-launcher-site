@@ -10,7 +10,7 @@ const content = {
   en: {
     nav: [
       ["Features", "#features"],
-      ["Download", "/download"],
+      ["Releases", "/releases"],
       ["Actions", "#actions"],
       ["How it works", "#how-it-works"],
       ["Privacy", "#privacy"],
@@ -92,7 +92,7 @@ const content = {
   uk: {
     nav: [
       ["Можливості", "#features"],
-      ["Завантажити", "/download"],
+      ["Релізи", "/releases"],
       ["Дії", "#actions"],
       ["Як це працює", "#how-it-works"],
       ["Приватність", "#privacy"],
@@ -399,7 +399,7 @@ export default function Home() {
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem("fl-language");
     if (savedLanguage === "uk" || savedLanguage === "en") {
-      setLanguage(savedLanguage);
+      queueMicrotask(() => setLanguage(savedLanguage));
     }
 
     const controller = new AbortController();
@@ -453,7 +453,7 @@ export default function Home() {
           </div>
           <p className="download-note">
             {language === "uk" ? "Версія" : "Version"} {release.version} · {t.downloadNote}
-            <a href="/download">{language === "uk" ? "Деталі релізу" : "Release details"}</a>
+            <a href="/releases">{language === "uk" ? "Деталі релізу" : "Release details"}</a>
           </p>
         </div>
 
@@ -632,6 +632,7 @@ export default function Home() {
         </a>
         <div>
           <a href="/download">{language === "uk" ? "Завантажити" : "Download"}</a>
+          <a href="/releases">{language === "uk" ? "Релізи" : "Releases"}</a>
           <a href="https://github.com/dedovk/fingerprint-launcher">GitHub</a>
           <a href="https://github.com/dedovk/fingerprint-launcher/issues">{t.report}</a>
           <a href="https://github.com/dedovk/fingerprint-launcher/blob/main/PRIVACY.md">{t.privacy}</a>

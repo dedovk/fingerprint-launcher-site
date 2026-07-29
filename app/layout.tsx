@@ -95,7 +95,6 @@ const structuredData = {
   name: "FingerprintLauncher",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Windows 10, Windows 11",
-  softwareVersion: "1.0.0",
   description:
     "A local-first Windows utility that turns Windows Hello fingerprint scans into custom action sequences.",
   url: "https://fingerprint-launcher.com/",
