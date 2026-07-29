@@ -5,6 +5,9 @@ import { SiteIcon, type IconName } from "./icons";
 
 type Language = "en" | "uk";
 
+const DOWNLOAD_URL =
+  "https://github.com/dedovk/fingerprint-launcher/releases/download/v1.0.0/FingerprintLauncher_Setup_1.0.0.exe";
+
 const content = {
   en: {
     nav: [
@@ -428,7 +431,7 @@ export default function Home() {
           <h1>{t.heroTitle[0]}<span>{t.heroTitle[1]}</span></h1>
           <p className="hero-lead">{t.heroLead}</p>
           <div className="hero-actions">
-            <a className="button button-primary" href="https://github.com/dedovk/fingerprint-launcher/releases/latest">
+            <a className="button button-primary" href={DOWNLOAD_URL}>
               {t.download}<SiteIcon name="download" size={19} />
             </a>
             <a className="button button-secondary" href="https://github.com/dedovk/fingerprint-launcher">
@@ -596,7 +599,7 @@ export default function Home() {
         <img src="/logo.png" alt="" width="64" height="64" />
         <h2>{t.ctaTitle}</h2>
         <p>{t.ctaText}</p>
-        <a className="button button-primary" href="https://github.com/dedovk/fingerprint-launcher/releases/latest">
+        <a className="button button-primary" href={DOWNLOAD_URL}>
           {t.ctaButton}<SiteIcon name="download" size={19} />
         </a>
       </section>
