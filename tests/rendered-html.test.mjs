@@ -56,7 +56,7 @@ assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//
   assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
   assert.match(html, /https:\/\/fingerprint-launcher\.com\//);
   assert.match(html, /\/og\.png/);
-  assert.match(html, /favicon-fingerprint\.svg/);
+  assert.match(html, /favicon-fingerprint-v2\.png/);
   assert.match(html, /SoftwareApplication/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });

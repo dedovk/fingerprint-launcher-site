@@ -50,11 +50,13 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [
-      { url: "/favicon-fingerprint.svg", type: "image/svg+xml" },
-      { url: "/logo.png", type: "image/png", sizes: "64x64" },
-    ],
-    shortcut: "/favicon-fingerprint.svg",
+    icon: {
+      url: "/favicon-fingerprint-v2.png",
+      type: "image/png",
+      sizes: "64x64",
+    },
+    shortcut: "/favicon-fingerprint-v2.png",
+    apple: "/favicon-fingerprint-v2.png",
   },
   openGraph: {
     title: "FingerprintLauncher — Your fingerprint. Your shortcut.",
