@@ -603,7 +603,14 @@ export default function Home() {
 
       <footer>
         <a className="brand" href="#"><img src="/logo.png" alt="" width="30" height="30" /><span>FingerprintLauncher</span></a>
-        <p>Created by Kyrylo Diedov.</p>
+        <a
+          className="creator-link"
+          href="https://www.linkedin.com/in/kyrylo-diedov-112b833b2/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Created by Kyrylo Diedov.
+        </a>
         <div>
           <a href="https://github.com/dedovk/fingerprint-launcher">GitHub</a>
           <a href="https://github.com/dedovk/fingerprint-launcher/issues">{t.report}</a>

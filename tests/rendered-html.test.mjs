@@ -35,7 +35,9 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, /fingerprint-launcher-blue\.png/);
   assert.match(html, /15 actions/);
   assert.match(html, /Open application or file/);
-  assert.match(html, /HOW TO ADD IT CORRECTLY/);
-  assert.match(html, />UA</);
+assert.match(html, /HOW TO ADD IT CORRECTLY/);
+assert.match(html, />UA</);
+assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//);
+assert.match(html, /Created by Kyrylo Diedov\./);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
