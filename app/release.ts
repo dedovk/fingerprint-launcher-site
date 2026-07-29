@@ -162,7 +162,7 @@ export async function fetchAllReleases(signal?: AbortSignal): Promise<ReleaseInf
 
 export async function fetchLatestRelease(signal?: AbortSignal): Promise<ReleaseInfo> {
   const releases = await fetchAllReleases(signal);
-  return releases[0];
+  return releases.find((release) => !release.prerelease) ?? releases[0];
 }
 
 export function formatFileSize(bytes: number, locale: string): string {
