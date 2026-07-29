@@ -173,11 +173,36 @@ main { overflow-x: clip; overflow-y: visible; }
   text-transform: uppercase;
 }
 .status-dot {
+  position: relative;
+  flex: 0 0 auto;
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: #28c779;
   box-shadow: 0 0 0 4px rgba(40,199,121,.12);
+  animation: status-dot-pulse 2.2s ease-in-out infinite;
+}
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1px solid rgba(40,199,121,.5);
+  border-radius: inherit;
+  animation: status-dot-wave 2.2s ease-out infinite;
+}
+@keyframes status-dot-pulse {
+  0%, 100% {
+    transform: scale(.9);
+    box-shadow: 0 0 0 3px rgba(40,199,121,.1);
+  }
+  50% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 5px rgba(40,199,121,.18), 0 0 10px rgba(40,199,121,.42);
+  }
+}
+@keyframes status-dot-wave {
+  0% { opacity: .8; transform: scale(.55); }
+  75%, 100% { opacity: 0; transform: scale(1.5); }
 }
 .hero h1 {
   max-width: 610px;
