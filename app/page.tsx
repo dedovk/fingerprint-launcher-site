@@ -2,16 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { SiteIcon, type IconName } from "./icons";
+import { FALLBACK_RELEASE, fetchLatestRelease, type ReleaseInfo } from "./release";
 
 type Language = "en" | "uk";
-
-const DOWNLOAD_URL =
-  "https://github.com/dedovk/fingerprint-launcher/releases/download/v1.0.0/FingerprintLauncher_Setup_1.0.0.exe";
 
 const content = {
   en: {
     nav: [
       ["Features", "#features"],
+      ["Download", "/download"],
       ["Actions", "#actions"],
       ["How it works", "#how-it-works"],
       ["Privacy", "#privacy"],
@@ -25,7 +24,7 @@ const content = {
       "Turn the fingerprint reader already built into your laptop into a personal command center. One scan can open apps, run shortcuts, control Windows, and launch complete routines.",
     download: "Download for Windows",
     github: "Explore on GitHub",
-    downloadNote: "Version 1.0.0 · Windows 10/11 · Windows Hello required",
+    downloadNote: "Windows 10/11 · Windows Hello required",
     realUi: "REAL APPLICATION · BLUE THEME",
     proof: [
       ["fingerprint", "Private by design", "Local-first", "Settings and profiles stay on your PC."],
@@ -93,6 +92,7 @@ const content = {
   uk: {
     nav: [
       ["Можливості", "#features"],
+      ["Завантажити", "/download"],
       ["Дії", "#actions"],
       ["Як це працює", "#how-it-works"],
       ["Приватність", "#privacy"],
@@ -106,7 +106,7 @@ const content = {
       "Перетворіть сканер відбитків у вашому ноутбуці на персональний центр команд. Одне сканування може відкрити програми, виконати комбінації клавіш, керувати Windows і запустити цілий сценарій.",
     download: "Завантажити для Windows",
     github: "Переглянути на GitHub",
-    downloadNote: "Версія 1.0.0 · Windows 10/11 · потрібен Windows Hello",
+    downloadNote: "Windows 10/11 · потрібен Windows Hello",
     realUi: "РЕАЛЬНИЙ ЗАСТОСУНОК · СИНЯ ТЕМА",
     proof: [
       ["fingerprint", "Приватність за задумом", "Локальна робота", "Налаштування та профілі залишаються на вашому ПК."],
@@ -384,6 +384,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("en");
+  const [release, setRelease] = useState<ReleaseInfo>(FALLBACK_RELEASE);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedActionId, setSelectedActionId] = useState("launch_app");
   const t = content[language];
@@ -392,7 +393,19 @@ export default function Home() {
 
   useEffect(() => {
     document.documentElement.lang = language;
+    window.localStorage.setItem("fl-language", language);
   }, [language]);
+
+  useEffect(() => {
+    const savedLanguage = window.localStorage.getItem("fl-language");
+    if (savedLanguage === "uk" || savedLanguage === "en") {
+      setLanguage(savedLanguage);
+    }
+
+    const controller = new AbortController();
+    fetchLatestRelease(controller.signal).then(setRelease).catch(() => undefined);
+    return () => controller.abort();
+  }, []);
 
   return (
     <main>
@@ -431,14 +444,17 @@ export default function Home() {
           <h1>{t.heroTitle[0]}<span>{t.heroTitle[1]}</span></h1>
           <p className="hero-lead">{t.heroLead}</p>
           <div className="hero-actions">
-            <a className="button button-primary" href={DOWNLOAD_URL}>
+            <a className="button button-primary" href={release.downloadUrl}>
               {t.download}<SiteIcon name="download" size={19} />
             </a>
             <a className="button button-secondary" href="https://github.com/dedovk/fingerprint-launcher">
               {t.github}<SiteIcon name="external" size={18} />
             </a>
           </div>
-          <p className="download-note">{t.downloadNote}</p>
+          <p className="download-note">
+            {language === "uk" ? "Версія" : "Version"} {release.version} · {t.downloadNote}
+            <a href="/download">{language === "uk" ? "Деталі релізу" : "Release details"}</a>
+          </p>
         </div>
 
         <div className="product-stage">
@@ -599,7 +615,7 @@ export default function Home() {
         <img src="/logo.png" alt="" width="64" height="64" />
         <h2>{t.ctaTitle}</h2>
         <p>{t.ctaText}</p>
-        <a className="button button-primary" href={DOWNLOAD_URL}>
+        <a className="button button-primary" href={release.downloadUrl}>
           {t.ctaButton}<SiteIcon name="download" size={19} />
         </a>
       </section>
@@ -615,6 +631,7 @@ export default function Home() {
           Created by Kyrylo Diedov.
         </a>
         <div>
+          <a href="/download">{language === "uk" ? "Завантажити" : "Download"}</a>
           <a href="https://github.com/dedovk/fingerprint-launcher">GitHub</a>
           <a href="https://github.com/dedovk/fingerprint-launcher/issues">{t.report}</a>
           <a href="https://github.com/dedovk/fingerprint-launcher/blob/main/PRIVACY.md">{t.privacy}</a>

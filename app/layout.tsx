@@ -100,7 +100,7 @@ const structuredData = {
     "A local-first Windows utility that turns Windows Hello fingerprint scans into custom action sequences.",
   url: "https://fingerprint-launcher.com/",
   downloadUrl:
-    "https://github.com/dedovk/fingerprint-launcher/releases/download/v1.0.0/FingerprintLauncher_Setup_1.0.0.exe",
+    "https://fingerprint-launcher.com/download",
   author: {
     "@type": "Person",
     name: "Kyrylo Diedov",

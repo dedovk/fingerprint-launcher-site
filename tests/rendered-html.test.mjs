@@ -49,9 +49,9 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, /fingerprint-launcher-blue\.png/);
   assert.match(html, /15 actions/);
   assert.match(html, /Open application or file/);
-assert.match(html, /HOW TO ADD IT CORRECTLY/);
-assert.match(html, />UA</);
-assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//);
+  assert.match(html, /HOW TO ADD IT CORRECTLY/);
+  assert.match(html, />UA</);
+  assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//);
   assert.match(html, /Created by Kyrylo Diedov\./);
   assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
   assert.match(html, /https:\/\/fingerprint-launcher\.com\//);
@@ -59,6 +59,23 @@ assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//
   assert.match(html, /favicon-fingerprint-v2\.png/);
   assert.match(html, /SoftwareApplication/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
+});
+
+test("server-renders the download and verification page", async () => {
+  const response = await render("https://fingerprint-launcher.com/download");
+  assert.equal(response.status, 200);
+  assert.match(
+    response.headers.get("content-security-policy") ?? "",
+    /connect-src[^;]*https:\/\/api\.github\.com/,
+  );
+
+  const html = await response.text();
+  assert.match(html, /Download FingerprintLauncher/);
+  assert.match(html, /SHA-256 checksum/);
+  assert.match(html, /23CA1A0D610A325933F85A37E2D36FD7A0B9BA34C350CA08432F7AE6616A9742/);
+  assert.match(html, /Windows Hello-compatible fingerprint reader/);
+  assert.match(html, /SmartScreen/);
+  assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
 });
 
 test("redirects HTTP and www traffic to the canonical HTTPS origin", async () => {

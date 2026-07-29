@@ -29,7 +29,7 @@ const CONTENT_SECURITY_POLICY = [
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com",
-  "connect-src 'self' https://cloudflareinsights.com https://*.cloudflareinsights.com",
+  "connect-src 'self' https://api.github.com https://cloudflareinsights.com https://*.cloudflareinsights.com",
   "worker-src 'self' blob:",
   "upgrade-insecure-requests",
 ].join("; ");
