@@ -28,6 +28,9 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   assert.equal(response.headers.get("x-content-type-options"), "nosniff");
   assert.equal(response.headers.get("x-frame-options"), "DENY");
+  assert.equal(response.headers.get("cross-origin-resource-policy"), "same-origin");
+  assert.equal(response.headers.get("origin-agent-cluster"), "?1");
+  assert.equal(response.headers.get("x-dns-prefetch-control"), "off");
   assert.equal(
     response.headers.get("referrer-policy"),
     "strict-origin-when-cross-origin",
@@ -39,6 +42,10 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(
     response.headers.get("content-security-policy") ?? "",
     /frame-ancestors 'none'/,
+  );
+  assert.match(
+    response.headers.get("content-security-policy") ?? "",
+    /frame-src 'none'/,
   );
 
   const html = await response.text();
@@ -72,6 +79,7 @@ test("server-renders the download and verification page", async () => {
 
   const html = await response.text();
   assert.match(html, /Download FingerprintLauncher/);
+  assert.match(html, /class="download-product-name">FingerprintLauncher\.<\/span>/);
   assert.match(html, /SHA-256 checksum/);
   assert.match(html, /23CA1A0D610A325933F85A37E2D36FD7A0B9BA34C350CA08432F7AE6616A9742/);
   assert.match(html, /Windows Hello-compatible fingerprint reader/);

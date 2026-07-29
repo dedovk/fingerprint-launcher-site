@@ -842,11 +842,18 @@ footer a:hover { color: var(--blue); }
 .download-intro h1 {
   max-width: 600px;
   margin: 16px 0 20px;
-  font-size: clamp(46px, 4.5vw, 58px);
+  font-size: clamp(42px, 4.15vw, 54px);
   line-height: .98;
   letter-spacing: -.06em;
   font-weight: 650;
-  overflow-wrap: anywhere;
+}
+.download-intro h1 > span {
+  display: block;
+}
+.download-product-name {
+  width: max-content;
+  max-width: 100%;
+  white-space: nowrap;
 }
 .download-intro > p {
   max-width: 560px;
@@ -1484,7 +1491,7 @@ footer a:hover { color: var(--blue); }
   .back-link { display: none; }
   .download-header-actions { gap: 10px; }
   .download-hero { padding: 56px 0 42px; gap: 36px; }
-  .download-intro h1 { font-size: clamp(43px, 13vw, 58px); }
+  .download-intro h1 { font-size: clamp(33px, 10.4vw, 45px); }
   .download-intro > p { font-size: 15px; }
   .release-card { padding: 22px; border-radius: 20px; }
   .release-card-top strong { font-size: 16px; }

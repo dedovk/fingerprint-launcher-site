@@ -16,7 +16,8 @@ const copy = {
   en: {
     back: "Back to home",
     eyebrow: "LATEST WINDOWS RELEASE",
-    title: "Download FingerprintLauncher.",
+    titleLead: "Download",
+    titleProduct: "FingerprintLauncher.",
     lead: "Get the official installer from GitHub Releases and verify the file before installation.",
     download: "Download installer",
     github: "View release on GitHub",
@@ -50,7 +51,8 @@ const copy = {
   uk: {
     back: "Повернутися на головну",
     eyebrow: "ОСТАННІЙ РЕЛІЗ ДЛЯ WINDOWS",
-    title: "Завантажте FingerprintLauncher.",
+    titleLead: "Завантажте",
+    titleProduct: "FingerprintLauncher.",
     lead: "Отримайте офіційний інсталятор із GitHub Releases і перевірте файл перед встановленням.",
     download: "Завантажити інсталятор",
     github: "Переглянути реліз на GitHub",
@@ -137,7 +139,10 @@ export default function DownloadPage() {
       <section className="download-hero">
         <div className="download-intro">
           <span className="section-label">{t.eyebrow}</span>
-          <h1>{t.title}</h1>
+          <h1>
+            <span>{t.titleLead}</span>
+            <span className="download-product-name">{t.titleProduct}</span>
+          </h1>
           <p>{t.lead}</p>
           <div className="release-status">
             <span className="status-dot" />
