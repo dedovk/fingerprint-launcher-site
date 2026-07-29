@@ -1080,6 +1080,8 @@ footer a:hover { color: var(--blue); }
   gap: 22px;
 }
 .release-entry {
+  height: min(680px, calc(100vh - 130px));
+  min-height: 560px;
   border: 1px solid #d3deed;
   border-radius: 24px;
   overflow: hidden;
@@ -1154,8 +1156,36 @@ footer a:hover { color: var(--blue); }
   font-weight: 700;
 }
 .release-entry-actions > a:last-child:hover { color: white; }
-.release-entry-body { min-width: 0; padding: 36px 40px 42px; }
-.release-notes { margin-top: 24px; color: #52637e; font-size: 14px; line-height: 1.72; }
+.release-entry-body {
+  min-width: 0;
+  min-height: 0;
+  padding: 36px 30px 30px 40px;
+  display: flex;
+  flex-direction: column;
+}
+.release-notes {
+  min-height: 0;
+  margin-top: 24px;
+  padding-right: 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: #52637e;
+  font-size: 14px;
+  line-height: 1.72;
+  scrollbar-width: thin;
+  scrollbar-color: #9ab4dc #edf3fb;
+}
+.release-notes::-webkit-scrollbar { width: 7px; }
+.release-notes::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: #edf3fb;
+}
+.release-notes::-webkit-scrollbar-thumb {
+  border: 2px solid #edf3fb;
+  border-radius: 999px;
+  background: #7f9fce;
+}
+.release-notes::-webkit-scrollbar-thumb:hover { background: #527bb9; }
 .release-notes h3 {
   margin: 30px 0 12px;
   color: #152b53;
@@ -1221,7 +1251,12 @@ footer a:hover { color: var(--blue); }
   .steps article { min-height: 220px; }
   .steps h3 { margin-top: 36px; }
   .download-grid { grid-template-columns: 1fr; }
-  .release-entry { grid-template-columns: 1fr; }
+  .release-entry {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+  .release-entry-body { height: min(540px, 72vh); }
 }
 
 @media (max-width: 620px) {
