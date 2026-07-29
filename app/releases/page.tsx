@@ -54,7 +54,11 @@ function plainInline(text: string): string {
 }
 
 function ReleaseNotes({ notes }: { notes: string }) {
-  const blocks = notes.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
+  const blocks = notes
+    .replace(/\r\n?/g, "\n")
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean);
   const rendered: ReactNode[] = [];
 
   blocks.forEach((block, index) => {

@@ -58,7 +58,7 @@ type GitHubRelease = {
   assets?: GitHubAsset[];
 };
 
-const RELEASE_CACHE_KEY = "fingerprint-launcher-releases-v1";
+const RELEASE_CACHE_KEY = "fingerprint-launcher-releases-v2";
 const RELEASE_CACHE_TTL = 15 * 60 * 1000;
 
 function parseRelease(release: GitHubRelease): ReleaseInfo | null {
