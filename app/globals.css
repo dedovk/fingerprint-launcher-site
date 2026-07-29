@@ -20,9 +20,15 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--surface);
   color: var(--ink);
   font-family: var(--font-manrope), "Segoe UI", sans-serif;
@@ -641,6 +647,7 @@ main { overflow-x: clip; overflow-y: visible; }
   background: linear-gradient(135deg, #07152f, #102b5b);
   box-shadow: 0 30px 70px rgba(4,22,54,.16);
 }
+.privacy-section > div { min-width: 0; }
 .privacy-section h2 { max-width: 690px; font-size: clamp(34px, 4vw, 48px); }
 .privacy-section p { max-width: 700px; margin-bottom: 0; color: #9fb0cc; }
 .privacy-visual {
@@ -825,9 +832,33 @@ footer a:hover { color: var(--blue); }
   .action-choice { min-height: 68px; padding-inline: 9px; }
   .action-guide { padding: 24px; }
   .action-guide h3 { font-size: 26px; }
-  .privacy-section { margin-bottom: 85px; padding: 36px 25px; grid-template-columns: 1fr; }
+  .privacy-section {
+    margin-bottom: 85px;
+    padding: 36px 25px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    overflow: hidden;
+  }
+  .privacy-section > div { width: 100%; }
+  .privacy-section h2,
+  .privacy-section p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .privacy-section h2 {
+    font-size: clamp(28px, 7.8vw, 34px);
+    letter-spacing: -.04em;
+  }
   .privacy-visual { width: 72px; height: 72px; }
-  .privacy-section .button { grid-column: auto; width: 100%; }
+  .privacy-section .button {
+    grid-column: auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
+  }
   .faq-answer p { margin-right: 0; }
   .cta { padding: 35px 0 90px; }
   .cta .button { width: 100%; min-width: 0; }
