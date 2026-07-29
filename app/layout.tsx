@@ -19,9 +19,13 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://fingerprint-launcher.com"),
   title: "FingerprintLauncher — Your fingerprint. Your shortcut.",
   description:
     "Turn Windows Hello fingerprint scans into custom action sequences for Windows 10 and 11.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
@@ -30,6 +34,7 @@ export const metadata: Metadata = {
     title: "FingerprintLauncher",
     description:
       "Turn Windows Hello fingerprint scans into custom action sequences.",
+    url: "/",
     type: "website",
   },
 };
