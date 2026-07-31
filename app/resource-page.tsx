@@ -22,12 +22,30 @@ const supportOptions = {
     email: "Email support",
     issue: "Open a GitHub issue",
     addressLabel: "Private support email",
+    panelTitle: "Choose how to send your request",
+    panelLead: "Use webmail in the browser, or copy the address and prepared request template into any email service.",
+    gmail: "Open Gmail Web",
+    outlook: "Open Outlook Web",
+    copyEmail: "Copy email address",
+    copiedEmail: "Email address copied",
+    copyTemplate: "Copy request template",
+    copiedTemplate: "Request template copied",
+    close: "Close email options",
     safety: "Include your Windows and app versions, expected result, actual result, and steps to reproduce. Never send passwords, PINs, biometric data, private keys, or access tokens.",
     helpSubject: "FingerprintLauncher support request",
     privacySubject: "FingerprintLauncher privacy question",
     template: "App version:\nWindows version:\nFingerprint reader model:\n\nExpected result:\n\nActual result:\n\nSteps to reproduce:\n1. \n2. \n3. \n\nRelevant log details (remove personal or sensitive data first):\n",
   },
   uk: {
+    panelTitle: "Оберіть, як надіслати звернення",
+    panelLead: "Відкрийте вебпошту в браузері або скопіюйте адресу й готовий шаблон звернення до будь-якого поштового сервісу.",
+    gmail: "Відкрити Gmail Web",
+    outlook: "Відкрити Outlook Web",
+    copyEmail: "Скопіювати адресу",
+    copiedEmail: "Адресу скопійовано",
+    copyTemplate: "Скопіювати шаблон звернення",
+    copiedTemplate: "Шаблон скопійовано",
+    close: "Закрити варіанти пошти",
     email: "Написати в підтримку",
     issue: "Створити GitHub Issue",
     addressLabel: "Приватна пошта підтримки",
@@ -124,13 +142,37 @@ const resources = {
 export default function ResourcePage({ kind }: { kind: ResourceKind }) {
   const [language, setLanguage] = useState<Language>("en");
   const [release, setRelease] = useState<ReleaseInfo>(FALLBACK_RELEASE);
+  const [supportOpen, setSupportOpen] = useState(false);
+  const [copied, setCopied] = useState<"email" | "template" | null>(null);
   const t = resources[kind][language];
   const support = supportOptions[language];
   const emailSubject = kind === "privacy" ? support.privacySubject : support.helpSubject;
   const emailBody = kind === "privacy"
     ? `${support.template}\nPrivacy question:\n`
     : support.template;
-  const supportMailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(SUPPORT_EMAIL)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+  const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(SUPPORT_EMAIL)}&subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+  const copySupportText = async (value: string, type: "email" | "template") => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = value;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      }
+      setCopied(type);
+      window.setTimeout(() => setCopied((current) => current === type ? null : current), 1800);
+    } catch {
+      setCopied(null);
+    }
+  };
 
   const withCurrentRelease = (text: string) =>
     text
@@ -176,18 +218,31 @@ export default function ResourcePage({ kind }: { kind: ResourceKind }) {
               <div><h2>{section.title}</h2>{section.paragraphs?.map((paragraph) => <p key={paragraph}>{withCurrentRelease(paragraph)}</p>)}{section.items && <ul>{section.items.map((item) => <li key={item}>{withCurrentRelease(item)}</li>)}</ul>}</div>
             </section>
           ))}
-          <section className="resource-contact">
+          <section className="resource-contact" id="support">
             <div>
               <span className="section-label">{t.contactTitle}</span>
               <p>{t.contact}</p>
               <p className="resource-contact-safety">{support.safety}</p>
-              <a className="support-address" href={`mailto:${SUPPORT_EMAIL}`}>
+              <button className="support-address" type="button" onClick={() => void copySupportText(SUPPORT_EMAIL, "email")}>
                 <span>{support.addressLabel}</span>{SUPPORT_EMAIL}
-              </a>
+                <small>{copied === "email" ? support.copiedEmail : support.copyEmail}</small>
+              </button>
             </div>
             <div className="resource-contact-actions">
-              <a className="button button-primary" href={supportMailto}>{support.email}<SiteIcon name="mail" size={17} /></a>
+              <button className="button button-primary" type="button" aria-expanded={supportOpen} aria-controls="email-support-options" onClick={() => setSupportOpen((current) => !current)}>{support.email}<SiteIcon name="mail" size={17} /></button>
               <a className="button button-dark" href="https://github.com/dedovk/fingerprint-launcher/issues">{support.issue}<SiteIcon name="external" size={17} /></a>
+            </div>
+            <div className="resource-contact-panel" id="email-support-options" hidden={!supportOpen}>
+              <div className="resource-contact-panel-head">
+                <div><strong>{support.panelTitle}</strong><p>{support.panelLead}</p></div>
+                <button type="button" onClick={() => setSupportOpen(false)} aria-label={support.close}>×</button>
+              </div>
+              <div className="resource-provider-grid">
+                <a className="support-tool" href={gmailUrl} target="_blank" rel="noreferrer"><span>{support.gmail}</span><SiteIcon name="external" size={17} /></a>
+                <a className="support-tool" href={outlookUrl} target="_blank" rel="noreferrer"><span>{support.outlook}</span><SiteIcon name="external" size={17} /></a>
+                <button className="support-tool" type="button" onClick={() => void copySupportText(SUPPORT_EMAIL, "email")}><span>{copied === "email" ? support.copiedEmail : support.copyEmail}</span><SiteIcon name={copied === "email" ? "check" : "clipboard"} size={17} /></button>
+                <button className="support-tool" type="button" onClick={() => void copySupportText(`${emailSubject}\n\n${emailBody}`, "template")}><span>{copied === "template" ? support.copiedTemplate : support.copyTemplate}</span><SiteIcon name={copied === "template" ? "check" : "clipboard"} size={17} /></button>
+              </div>
             </div>
           </section>
         </article>

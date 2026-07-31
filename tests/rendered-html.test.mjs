@@ -61,7 +61,8 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, />UA</);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//);
   assert.match(html, /Created by Kyrylo Diedov\./);
-  assert.match(html, /mailto:support@fingerprint-launcher\.com/);
+  assert.match(html, /href="\/help#support"/);
+  assert.doesNotMatch(html, /href="mailto:support@fingerprint-launcher\.com/);
   assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
   assert.match(html, /href="\/releases"/);
   assert.match(html, /https:\/\/fingerprint-launcher\.com\//);
@@ -129,7 +130,10 @@ test("server-renders the help center", async () => {
   assert.match(html, /activation hotkey/);
   assert.match(html, /Email support/);
   assert.match(html, /Open a GitHub issue/);
-  assert.match(html, /mailto:support@fingerprint-launcher\.com\?subject=/);
+  assert.match(html, /Open Gmail Web/);
+  assert.match(html, /Open Outlook Web/);
+  assert.match(html, /Copy request template/);
+  assert.doesNotMatch(html, /href="mailto:/);
   assert.match(html, /FingerprintLauncher 1\.1\.0/);
   assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
 });
