@@ -593,7 +593,7 @@ main {
   position: absolute;
   top: 17px;
   left: 39px;
-  z-index: 2;
+  z-index: 1;
   width: 9px;
   height: 9px;
   border: 2px solid #b9d6ff;
@@ -601,9 +601,11 @@ main {
   background: #2e7cf6;
   box-shadow: 0 0 0 5px rgba(46,124,246,.14), 0 0 16px rgba(46,124,246,.7);
   animation: workflowDot 6s cubic-bezier(.4,0,.2,1) infinite;
+  will-change: transform, opacity;
 }
 .timeline-row {
   position: relative;
+  z-index: 2;
   margin-bottom: 8px;
   padding: 12px 13px;
   border: 1px solid #dbe5f4;
@@ -900,12 +902,26 @@ main {
   display: grid;
   place-items: center;
 }
+.download-help-link {
+  width: fit-content;
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.download-help-link svg { transition: transform .2s ease; }
+.download-help-link:hover svg { transform: translateX(3px); }
 .privacy-visual > svg {
   position: relative;
   z-index: 2;
   color: #c7dcff;
   transform-origin: center;
   animation: fingerprint-pulse 2.8s ease-in-out infinite;
+  will-change: transform, opacity, filter;
 }
 .privacy-ring {
   position: absolute;
@@ -913,6 +929,7 @@ main {
   border-radius: 50%;
   transform-origin: center;
   animation: fingerprint-ring-pulse 2.8s ease-out infinite;
+  will-change: transform, opacity;
 }
 .ring-one { inset: 4px; }
 .ring-two { inset: -11px; animation-delay: .55s; }
@@ -1779,6 +1796,7 @@ footer a:hover { color: var(--blue); }
     height: 72px;
     min-width: 72px;
     aspect-ratio: 1;
+    justify-self: center;
   }
   .privacy-section .button {
     grid-column: auto;

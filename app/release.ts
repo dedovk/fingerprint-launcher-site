@@ -58,8 +58,8 @@ type GitHubRelease = {
   assets?: GitHubAsset[];
 };
 
-const RELEASE_CACHE_KEY = "fingerprint-launcher-releases-v2";
-const RELEASE_CACHE_TTL = 15 * 60 * 1000;
+const RELEASE_CACHE_KEY = "fingerprint-launcher-releases-v3";
+const RELEASE_CACHE_TTL = 5 * 60 * 1000;
 
 function parseRelease(release: GitHubRelease): ReleaseInfo | null {
   const installer = release.assets?.find((asset) =>
@@ -99,6 +99,7 @@ function parseRelease(release: GitHubRelease): ReleaseInfo | null {
 async function githubRequest<T>(path: string, signal?: AbortSignal): Promise<T> {
   const response = await fetch(`https://api.github.com/repos/dedovk/fingerprint-launcher${path}`, {
     signal,
+    cache: "no-store",
     headers: {
       Accept: "application/vnd.github+json",
     },

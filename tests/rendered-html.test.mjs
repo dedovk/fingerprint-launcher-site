@@ -87,6 +87,8 @@ test("server-renders the download and verification page", async () => {
   assert.match(html, /SmartScreen/);
   assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
   assert.match(html, /All releases/);
+  assert.match(html, /href="\/help"/);
+  assert.match(html, /Open the complete setup guide/);
 });
 
 test("server-renders the synchronized release history", async () => {

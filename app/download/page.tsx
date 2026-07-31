@@ -204,6 +204,10 @@ export default function DownloadPage() {
             <ol>
               {t.steps.map((step) => <li key={step}>{step}</li>)}
             </ol>
+            <Link className="download-help-link" href="/help">
+              {language === "uk" ? "Відкрити повну інструкцію з налаштування" : "Open the complete setup guide"}
+              <SiteIcon name="chevron" size={16} />
+            </Link>
           </article>
         </div>
 

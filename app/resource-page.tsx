@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SiteIcon, type IconName } from "./icons";
+import { FALLBACK_RELEASE, fetchLatestRelease, type ReleaseInfo } from "./release";
 
 type Language = "en" | "uk";
 type ResourceKind = "privacy" | "help";
@@ -99,11 +100,21 @@ const resources = {
 
 export default function ResourcePage({ kind }: { kind: ResourceKind }) {
   const [language, setLanguage] = useState<Language>("en");
+  const [release, setRelease] = useState<ReleaseInfo>(FALLBACK_RELEASE);
   const t = resources[kind][language];
+
+  const withCurrentRelease = (text: string) =>
+    text
+      .replaceAll(FALLBACK_RELEASE.fileName, release.fileName)
+      .replaceAll(FALLBACK_RELEASE.version, release.version);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("fl-language");
     if (saved === "en" || saved === "uk") queueMicrotask(() => setLanguage(saved));
+
+    const controller = new AbortController();
+    fetchLatestRelease(controller.signal).then(setRelease).catch(() => undefined);
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
@@ -124,7 +135,7 @@ export default function ResourcePage({ kind }: { kind: ResourceKind }) {
         </div>
       </header>
       <section className="resource-hero">
-        <span className="section-label">{t.eyebrow}</span><h1>{t.title}</h1><p>{t.lead}</p><small>{t.updated}</small>
+        <span className="section-label">{t.eyebrow}</span><h1>{t.title}</h1><p>{t.lead}</p><small>{withCurrentRelease(t.updated)}</small>
       </section>
       <div className="resource-layout">
         <aside className="resource-nav"><span>{t.navLabel}</span>{t.sections.map((section) => <a key={section.id} href={`#${section.id}`}>{section.title}</a>)}</aside>
@@ -133,7 +144,7 @@ export default function ResourcePage({ kind }: { kind: ResourceKind }) {
           {t.sections.map((section: ResourceSection) => (
             <section className="resource-section" id={section.id} key={section.id}>
               <div className="resource-section-icon"><SiteIcon name={section.icon} size={24} /></div>
-              <div><h2>{section.title}</h2>{section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.items && <ul>{section.items.map((item) => <li key={item}>{item}</li>)}</ul>}</div>
+              <div><h2>{section.title}</h2>{section.paragraphs?.map((paragraph) => <p key={paragraph}>{withCurrentRelease(paragraph)}</p>)}{section.items && <ul>{section.items.map((item) => <li key={item}>{withCurrentRelease(item)}</li>)}</ul>}</div>
             </section>
           ))}
           <section className="resource-contact"><div><span className="section-label">{t.contactTitle}</span><p>{t.contact}</p></div><a className="button button-primary" href="https://github.com/dedovk/fingerprint-launcher/issues">{t.contactButton}<SiteIcon name="external" size={17} /></a></section>
