@@ -60,7 +60,7 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, />UA</);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//);
   assert.match(html, /Created by Kyrylo Diedov\./);
-  assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
+  assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
   assert.match(html, /href="\/releases"/);
   assert.match(html, /https:\/\/fingerprint-launcher\.com\//);
   assert.match(html, /\/og\.png/);
@@ -82,10 +82,10 @@ test("server-renders the download and verification page", async () => {
   assert.match(html, /Download FingerprintLauncher/);
   assert.match(html, /class="download-product-name">FingerprintLauncher\.<\/span>/);
   assert.match(html, /SHA-256 checksum/);
-  assert.match(html, /23CA1A0D610A325933F85A37E2D36FD7A0B9BA34C350CA08432F7AE6616A9742/);
+  assert.match(html, /DBFC37AF918EED2AF819B719D91323A9FD9EC18BDEB6066533286EFF4DF5E74F/);
   assert.match(html, /Windows Hello-compatible fingerprint reader/);
   assert.match(html, /SmartScreen/);
-  assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
+  assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
   assert.match(html, /All releases/);
   assert.match(html, /href="\/help"/);
   assert.match(html, /Open the complete setup guide/);
@@ -98,12 +98,12 @@ test("server-renders the synchronized release history", async () => {
   const html = await response.text();
   assert.match(html, /Every version, in one place/);
   assert.match(html, /Automatically synchronized from the official GitHub repository/);
-  assert.match(html, /FingerprintLauncher v1\.0\.0/);
+  assert.match(html, /FingerprintLauncher v1\.1\.0/);
   assert.match(html, /Release notes/);
   assert.match(html, /<h2>Highlights<\/h2>/);
-  assert.match(html, /Create and manage multiple fingerprint profiles/);
+  assert.match(html, /Improved cancellation and shutdown handling/);
   assert.match(html, /Download installer/);
-  assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);
+  assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
 });
 
 test("server-renders the internal privacy policy", async () => {
@@ -124,6 +124,8 @@ test("server-renders the help center", async () => {
   assert.match(html, /Scanner is not detected/);
   assert.match(html, /activation hotkey/);
   assert.match(html, /Report an issue/);
+  assert.match(html, /FingerprintLauncher 1\.1\.0/);
+  assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
 });
 
 test("redirects HTTP and www traffic to the canonical HTTPS origin", async () => {

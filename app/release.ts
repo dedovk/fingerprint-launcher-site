@@ -13,25 +13,25 @@ export type ReleaseInfo = {
 };
 
 export const FALLBACK_RELEASE: ReleaseInfo = {
-  name: "FingerprintLauncher v1.0.0",
-  version: "1.0.0",
-  tag: "v1.0.0",
-  publishedAt: "2026-07-27T15:55:54Z",
-  fileName: "FingerprintLauncher_Setup_1.0.0.exe",
-  size: 23211047,
+  name: "FingerprintLauncher v1.1.0",
+  version: "1.1.0",
+  tag: "v1.1.0",
+  publishedAt: "2026-07-31T12:58:35Z",
+  fileName: "FingerprintLauncher_Setup_1.1.0.exe",
+  size: 23224952,
   downloadUrl:
-    "https://github.com/dedovk/fingerprint-launcher/releases/download/v1.0.0/FingerprintLauncher_Setup_1.0.0.exe",
-  releaseUrl: "https://github.com/dedovk/fingerprint-launcher/releases/tag/v1.0.0",
-  sha256: "23CA1A0D610A325933F85A37E2D36FD7A0B9BA34C350CA08432F7AE6616A9742",
-  notes: `The first public release of FingerprintLauncher.
+    "https://github.com/dedovk/fingerprint-launcher/releases/download/v1.1.0/FingerprintLauncher_Setup_1.1.0.exe",
+  releaseUrl: "https://github.com/dedovk/fingerprint-launcher/releases/tag/v1.1.0",
+  sha256: "DBFC37AF918EED2AF819B719D91323A9FD9EC18BDEB6066533286EFF4DF5E74F",
+  notes: `FingerprintLauncher v1.1.0 is a stability and maintainability update.
 
 ## Highlights
 
-- Create and manage multiple fingerprint profiles.
-- Assign ordered action sequences to each finger.
-- Run quietly from the Windows system tray.
-- Use quick timers, delays, hotkeys, PowerShell, and Windows system actions.
-- Choose from six interface themes.
+- Improved cancellation and shutdown handling for fingerprint capture workers.
+- Added persistent diagnostics for application, background thread, Qt, and native failures.
+- Added a complete privacy policy and official website links.
+- Expanded automated test coverage and internal architecture improvements.
+- Remains compatible with configurations created in v1.0.0.
 
 ## Requirements
 

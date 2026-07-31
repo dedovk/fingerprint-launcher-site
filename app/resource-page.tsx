@@ -105,8 +105,8 @@ export default function ResourcePage({ kind }: { kind: ResourceKind }) {
 
   const withCurrentRelease = (text: string) =>
     text
-      .replaceAll(FALLBACK_RELEASE.fileName, release.fileName)
-      .replaceAll(FALLBACK_RELEASE.version, release.version);
+      .replaceAll("FingerprintLauncher_Setup_1.0.0.exe", release.fileName)
+      .replaceAll("1.0.0", release.version);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("fl-language");
