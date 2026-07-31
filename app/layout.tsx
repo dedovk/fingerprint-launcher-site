@@ -104,6 +104,7 @@ const structuredData = {
     "@type": "Person",
     name: "Kyrylo Diedov",
     url: "https://www.linkedin.com/in/kyrylo-diedov-112b833b2/",
+    email: "support@fingerprint-launcher.com",
   },
   offers: {
     "@type": "Offer",

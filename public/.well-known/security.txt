@@ -1,0 +1,5 @@
+Contact: mailto:support@fingerprint-launcher.com
+Expires: 2027-07-31T23:59:59Z
+Preferred-Languages: en, uk
+Canonical: https://fingerprint-launcher.com/.well-known/security.txt
+Policy: https://fingerprint-launcher.com/privacy

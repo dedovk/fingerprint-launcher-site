@@ -15,6 +15,29 @@ type ResourceSection = {
   items?: string[];
 };
 
+const SUPPORT_EMAIL = "support@fingerprint-launcher.com";
+
+const supportOptions = {
+  en: {
+    email: "Email support",
+    issue: "Open a GitHub issue",
+    addressLabel: "Private support email",
+    safety: "Include your Windows and app versions, expected result, actual result, and steps to reproduce. Never send passwords, PINs, biometric data, private keys, or access tokens.",
+    helpSubject: "FingerprintLauncher support request",
+    privacySubject: "FingerprintLauncher privacy question",
+    template: "App version:\nWindows version:\nFingerprint reader model:\n\nExpected result:\n\nActual result:\n\nSteps to reproduce:\n1. \n2. \n3. \n\nRelevant log details (remove personal or sensitive data first):\n",
+  },
+  uk: {
+    email: "Написати в підтримку",
+    issue: "Створити GitHub Issue",
+    addressLabel: "Приватна пошта підтримки",
+    safety: "Додайте версії Windows і застосунку, очікуваний та фактичний результат, а також кроки відтворення. Не надсилайте паролі, PIN-коди, біометричні дані, приватні ключі або токени доступу.",
+    helpSubject: "Звернення до підтримки FingerprintLauncher",
+    privacySubject: "Питання щодо приватності FingerprintLauncher",
+    template: "Версія застосунку:\nВерсія Windows:\nМодель сканера відбитків:\n\nОчікуваний результат:\n\nФактичний результат:\n\nКроки відтворення:\n1. \n2. \n3. \n\nВажливі дані журналу (спочатку видаліть особисті або чутливі дані):\n",
+  },
+} as const;
+
 const resources = {
   privacy: {
     en: {
@@ -32,7 +55,7 @@ const resources = {
         { id: "security", title: "Security and responsible use", icon: "lock", paragraphs: ["Do not place passwords, access tokens, private keys, or financial credentials in action configuration. User-created PowerShell commands, URLs, and files run with the permissions and behavior you choose.", "Download the application only from this official website or the official GitHub repository."] },
       ],
       contactTitle: "Privacy questions",
-      contact: "For a privacy request, open an issue without including biometric data, passwords, private keys, or other sensitive information. Ask for a private communication channel if one is required.",
+      contact: "For a private privacy request, email the support address below. Use GitHub Issues only for information that can be public.",
       contactButton: "Contact through GitHub Issues",
       navLabel: "On this page",
     },
@@ -51,7 +74,7 @@ const resources = {
         { id: "security", title: "Безпека та відповідальне використання", icon: "lock", paragraphs: ["Не додавайте до дій паролі, токени доступу, приватні ключі чи фінансові дані. Створені вами PowerShell-команди, URL і файли працюють із вибраними вами дозволами та поведінкою.", "Завантажуйте застосунок лише з цього офіційного сайту або офіційного GitHub-репозиторію."] },
       ],
       contactTitle: "Питання щодо приватності",
-      contact: "Створіть звернення без біометричних даних, паролів, приватних ключів чи іншої чутливої інформації. Якщо потрібен приватний канал, спочатку попросіть розробника надати його.",
+      contact: "Для приватного питання щодо конфіденційності напишіть на адресу підтримки нижче. GitHub Issues використовуйте лише для інформації, яка може бути публічною.",
       contactButton: "Звернутися через GitHub Issues",
       navLabel: "На цій сторінці",
     },
@@ -72,7 +95,7 @@ const resources = {
         { id: "actions", title: "An action fails or behaves unexpectedly", icon: "workflow", paragraphs: ["Use full file paths and test the destination manually. Place sleep, restart, lock, or shutdown near the end of a sequence because later steps may not run.", "PowerShell commands execute on your computer. Review every command and never paste code from a source you do not trust."] },
       ],
       contactTitle: "Still need help?",
-      contact: "Check the release notes for known changes. If the problem remains, open a GitHub issue with your Windows version, app version, expected result, and steps to reproduce. Do not publish sensitive data.",
+      contact: "Check the release notes first. Then choose private email support or a public GitHub Issue depending on whether the report contains personal or device-specific details.",
       contactButton: "Report an issue",
       navLabel: "Help topics",
     },
@@ -91,7 +114,7 @@ const resources = {
         { id: "actions", title: "Дія не виконується або працює неочікувано", icon: "workflow", paragraphs: ["Використовуйте повні шляхи й перевіряйте ціль окремо. Сон, перезапуск, блокування або вимкнення краще ставити в кінець сценарію.", "PowerShell-команди виконуються на вашому комп’ютері. Перевіряйте кожну команду й не вставляйте код із джерел, яким не довіряєте."] },
       ],
       contactTitle: "Потрібна додаткова допомога?",
-      contact: "Перегляньте опис останніх релізів. Якщо проблема залишається, створіть GitHub Issue із версіями Windows і застосунку, очікуваним результатом та кроками відтворення. Не публікуйте чутливі дані.",
+      contact: "Спочатку перегляньте опис останніх релізів. Потім оберіть приватну пошту підтримки або публічний GitHub Issue залежно від того, чи містить звернення особисті дані або інформацію про пристрій.",
       contactButton: "Повідомити про проблему",
       navLabel: "Теми допомоги",
     },
@@ -102,6 +125,12 @@ export default function ResourcePage({ kind }: { kind: ResourceKind }) {
   const [language, setLanguage] = useState<Language>("en");
   const [release, setRelease] = useState<ReleaseInfo>(FALLBACK_RELEASE);
   const t = resources[kind][language];
+  const support = supportOptions[language];
+  const emailSubject = kind === "privacy" ? support.privacySubject : support.helpSubject;
+  const emailBody = kind === "privacy"
+    ? `${support.template}\nPrivacy question:\n`
+    : support.template;
+  const supportMailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
   const withCurrentRelease = (text: string) =>
     text
@@ -147,7 +176,20 @@ export default function ResourcePage({ kind }: { kind: ResourceKind }) {
               <div><h2>{section.title}</h2>{section.paragraphs?.map((paragraph) => <p key={paragraph}>{withCurrentRelease(paragraph)}</p>)}{section.items && <ul>{section.items.map((item) => <li key={item}>{withCurrentRelease(item)}</li>)}</ul>}</div>
             </section>
           ))}
-          <section className="resource-contact"><div><span className="section-label">{t.contactTitle}</span><p>{t.contact}</p></div><a className="button button-primary" href="https://github.com/dedovk/fingerprint-launcher/issues">{t.contactButton}<SiteIcon name="external" size={17} /></a></section>
+          <section className="resource-contact">
+            <div>
+              <span className="section-label">{t.contactTitle}</span>
+              <p>{t.contact}</p>
+              <p className="resource-contact-safety">{support.safety}</p>
+              <a className="support-address" href={`mailto:${SUPPORT_EMAIL}`}>
+                <span>{support.addressLabel}</span>{SUPPORT_EMAIL}
+              </a>
+            </div>
+            <div className="resource-contact-actions">
+              <a className="button button-primary" href={supportMailto}>{support.email}<SiteIcon name="mail" size={17} /></a>
+              <a className="button button-dark" href="https://github.com/dedovk/fingerprint-launcher/issues">{support.issue}<SiteIcon name="external" size={17} /></a>
+            </div>
+          </section>
         </article>
       </div>
     </main>

@@ -1031,7 +1031,7 @@ footer {
   transition: color .2s ease, text-decoration-color .2s ease;
 }
 .creator-link:hover { color: var(--blue); text-decoration-color: currentColor; }
-footer > div { justify-self: end; display: flex; gap: 21px; }
+footer > div { justify-self: end; display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px 21px; }
 footer a:hover { color: var(--blue); }
 
 .download-page {
@@ -1424,7 +1424,34 @@ footer a:hover { color: var(--blue); }
   font-size: 14px;
   line-height: 1.65;
 }
-.resource-contact .button { white-space: nowrap; }
+.resource-contact .resource-contact-safety {
+  color: #90a8cd;
+  font-size: 12px;
+}
+.support-address {
+  width: fit-content;
+  margin-top: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: white;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 13px;
+}
+.support-address span {
+  color: #7fa5e5;
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.resource-contact-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.resource-contact .button { min-width: 220px; white-space: nowrap; }
 .releases-hero {
   width: min(900px, calc(100% - 48px));
   margin: 0 auto;
@@ -1869,7 +1896,8 @@ footer a:hover { color: var(--blue); }
   .resource-section { padding: 31px 0; }
   .resource-section h2 { font-size: 23px; }
   .resource-contact { grid-template-columns: 1fr; padding: 23px; }
-  .resource-contact .button { width: 100%; white-space: normal; }
+  .resource-contact-actions { width: 100%; }
+  .resource-contact .button { width: 100%; min-width: 0; white-space: normal; }
 }
 
 @media (hover: none), (pointer: coarse) {

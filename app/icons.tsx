@@ -10,6 +10,7 @@ import {
   Globe2,
   Keyboard,
   LockKeyhole,
+  Mail,
   Minimize2,
   Monitor,
   Moon,
@@ -32,7 +33,7 @@ export type IconName =
   | "app" | "globe" | "keyboard" | "terminal" | "lock" | "minimize"
   | "volume-off" | "volume" | "close-window" | "power" | "restart" | "moon"
   | "clipboard" | "delay" | "timer" | "download" | "external" | "check"
-  | "chevron";
+  | "chevron" | "mail";
 
 const icons: Record<IconName, LucideIcon> = {
   fingerprint: Fingerprint,
@@ -60,6 +61,7 @@ const icons: Record<IconName, LucideIcon> = {
   external: ExternalLink,
   check: Check,
   chevron: ChevronDown,
+  mail: Mail,
 };
 
 export function SiteIcon({

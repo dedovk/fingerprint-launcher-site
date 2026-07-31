@@ -745,6 +745,7 @@ export default function Home() {
           <a href="/releases">{language === "uk" ? "Релізи" : "Releases"}</a>
           <a href="https://github.com/dedovk/fingerprint-launcher">GitHub</a>
           <a href="https://github.com/dedovk/fingerprint-launcher/issues">{t.report}</a>
+          <a href="mailto:support@fingerprint-launcher.com">{language === "uk" ? "Email підтримки" : "Support email"}</a>
           <a href="/help">{language === "uk" ? "Допомога" : "Help"}</a>
           <a href="/privacy">{t.privacy}</a>
         </div>

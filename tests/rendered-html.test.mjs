@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 async function render(url = "https://fingerprint-launcher.com/") {
@@ -60,6 +61,7 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, />UA</);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/kyrylo-diedov-112b833b2\//);
   assert.match(html, /Created by Kyrylo Diedov\./);
+  assert.match(html, /mailto:support@fingerprint-launcher\.com/);
   assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
   assert.match(html, /href="\/releases"/);
   assert.match(html, /https:\/\/fingerprint-launcher\.com\//);
@@ -114,6 +116,8 @@ test("server-renders the internal privacy policy", async () => {
   assert.match(html, /Windows Biometric Framework/);
   assert.match(html, /%LOCALAPPDATA%/);
   assert.match(html, /Privacy questions/);
+  assert.match(html, /Private support email/);
+  assert.match(html, /support@fingerprint-launcher\.com/);
 });
 
 test("server-renders the help center", async () => {
@@ -123,9 +127,22 @@ test("server-renders the help center", async () => {
   assert.match(html, /Set up your first fingerprint routine/);
   assert.match(html, /Scanner is not detected/);
   assert.match(html, /activation hotkey/);
-  assert.match(html, /Report an issue/);
+  assert.match(html, /Email support/);
+  assert.match(html, /Open a GitHub issue/);
+  assert.match(html, /mailto:support@fingerprint-launcher\.com\?subject=/);
   assert.match(html, /FingerprintLauncher 1\.1\.0/);
   assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
+});
+
+test("publishes a standard security contact", async () => {
+  const securityText = await readFile(
+    new URL("../public/.well-known/security.txt", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(securityText, /Contact: mailto:support@fingerprint-launcher\.com/);
+  assert.match(securityText, /Canonical: https:\/\/fingerprint-launcher\.com\/\.well-known\/security\.txt/);
+  assert.match(securityText, /Expires: 2027-07-31T23:59:59Z/);
 });
 
 test("redirects HTTP and www traffic to the canonical HTTPS origin", async () => {
