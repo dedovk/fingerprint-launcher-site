@@ -1471,62 +1471,6 @@ footer a:hover { color: var(--blue); }
   cursor: pointer;
 }
 .resource-contact .button-dark { border: 1px solid #31599b; }
-.resource-contact-panel {
-  grid-column: 1 / -1;
-  padding: 20px;
-  border: 1px solid rgba(126, 169, 235, .32);
-  border-radius: 15px;
-  background: rgba(255, 255, 255, .055);
-}
-.resource-contact-panel[hidden] { display: none; }
-.resource-contact-panel-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 16px;
-}
-.resource-contact-panel-head strong { font-size: 15px; }
-.resource-contact-panel-head p { margin-top: 6px; }
-.resource-contact-panel-head > button {
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
-  border: 1px solid rgba(126, 169, 235, .35);
-  border-radius: 9px;
-  color: white;
-  background: rgba(255,255,255,.05);
-  font-size: 21px;
-  line-height: 1;
-  cursor: pointer;
-}
-.resource-provider-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-.support-tool {
-  min-height: 48px;
-  padding: 0 15px;
-  border: 1px solid rgba(126, 169, 235, .3);
-  border-radius: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  color: white;
-  background: rgba(5, 27, 63, .55);
-  font-size: 12px;
-  font-weight: 700;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color .18s ease, background-color .18s ease, transform .18s ease;
-}
-.support-tool:hover {
-  border-color: #5d98f7;
-  background: rgba(25, 71, 143, .48);
-  transform: translateY(-1px);
-}
 .releases-hero {
   width: min(900px, calc(100% - 48px));
   margin: 0 auto;
@@ -1973,8 +1917,6 @@ footer a:hover { color: var(--blue); }
   .resource-contact { grid-template-columns: 1fr; padding: 23px; }
   .resource-contact-actions { width: 100%; }
   .resource-contact .button { width: 100%; min-width: 0; white-space: normal; }
-  .resource-provider-grid { grid-template-columns: 1fr; }
-  .resource-contact-panel { padding: 16px; }
 }
 
 @media (hover: none), (pointer: coarse) {

@@ -130,9 +130,10 @@ test("server-renders the help center", async () => {
   assert.match(html, /activation hotkey/);
   assert.match(html, /Email support/);
   assert.match(html, /Open a GitHub issue/);
-  assert.match(html, /Open Gmail Web/);
-  assert.match(html, /Open Outlook Web/);
-  assert.match(html, /Copy request template/);
+  assert.match(html, /https:\/\/mail\.google\.com\/mail\/\?view=cm/);
+  assert.match(html, /FingerprintLauncher%20support%20request/);
+  assert.doesNotMatch(html, /Open Outlook Web/);
+  assert.doesNotMatch(html, /Choose how to send your request/);
   assert.doesNotMatch(html, /href="mailto:/);
   assert.match(html, /FingerprintLauncher 1\.1\.0/);
   assert.match(html, /FingerprintLauncher_Setup_1\.1\.0\.exe/);
