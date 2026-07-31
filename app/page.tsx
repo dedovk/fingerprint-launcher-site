@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { SiteIcon, type IconName } from "./icons";
 import { FALLBACK_RELEASE, fetchLatestRelease, type ReleaseInfo } from "./release";
 
@@ -386,7 +391,10 @@ export default function Home() {
   const [language, setLanguage] = useState<Language>("en");
   const [release, setRelease] = useState<ReleaseInfo>(FALLBACK_RELEASE);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerHidden, setHeaderHidden] = useState(false);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
   const [selectedActionId, setSelectedActionId] = useState("launch_app");
+  const lastScrollY = useRef(0);
   const t = content[language];
   const guides = actionGuides[language];
   const selectedAction = guides.find((action) => action.id === selectedActionId) ?? guides[0];
@@ -407,9 +415,83 @@ export default function Home() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const revealTargets = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+
+    if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+      revealTargets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+
+    root.classList.add("motion-ready");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -10%", threshold: 0.12 },
+    );
+
+    revealTargets.forEach((target) => observer.observe(target));
+    return () => {
+      observer.disconnect();
+      root.classList.remove("motion-ready");
+    };
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const currentScrollY = Math.max(window.scrollY, 0);
+      const delta = currentScrollY - lastScrollY.current;
+
+      setHeaderScrolled(currentScrollY > 28);
+      if (Math.abs(delta) < 4) return;
+
+      if (!menuOpen && currentScrollY > 150 && delta > 0) {
+        setHeaderHidden(true);
+      } else if (delta < 0 || currentScrollY < 90 || menuOpen) {
+        setHeaderHidden(false);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    lastScrollY.current = Math.max(window.scrollY, 0);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [menuOpen]);
+
+  const handleStagePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (
+      !window.matchMedia("(pointer: fine)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) return;
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+    event.currentTarget.style.setProperty("--tilt-y", `${(x - 0.5) * 4}deg`);
+    event.currentTarget.style.setProperty("--tilt-x", `${(0.5 - y) * 2.8}deg`);
+    event.currentTarget.style.setProperty("--glow-x", `${x * 100}%`);
+    event.currentTarget.style.setProperty("--glow-y", `${y * 100}%`);
+  };
+
+  const resetStageTilt = (event: ReactPointerEvent<HTMLDivElement>) => {
+    event.currentTarget.style.removeProperty("--tilt-y");
+    event.currentTarget.style.removeProperty("--tilt-x");
+    event.currentTarget.style.removeProperty("--glow-x");
+    event.currentTarget.style.removeProperty("--glow-y");
+  };
+
   return (
     <main>
-      <header className="site-header">
+      <header className={`site-header${headerScrolled ? " is-scrolled" : ""}${headerHidden ? " is-hidden" : ""}`}>
         <a className="brand" href="#" aria-label="FingerprintLauncher home">
           <img src="/logo.png" alt="" width="38" height="38" />
           <span>FingerprintLauncher</span>
@@ -439,7 +521,7 @@ export default function Home() {
       </header>
 
       <section className="hero">
-        <div className="hero-copy">
+        <div className="hero-copy hero-entrance">
           <div className="eyebrow"><span className="status-dot" />{t.heroBadge}</div>
           <h1>{t.heroTitle[0]}<span>{t.heroTitle[1]}</span></h1>
           <p className="hero-lead">{t.heroLead}</p>
@@ -457,7 +539,11 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="product-stage">
+        <div
+          className="product-stage hero-entrance hero-entrance-delayed"
+          onPointerMove={handleStagePointerMove}
+          onPointerLeave={resetStageTilt}
+        >
           <div className="screen-glow" />
           <div className="real-screen">
             <img
@@ -469,7 +555,7 @@ export default function Home() {
       </section>
 
       <section className="proof-section" aria-label="Product highlights">
-        <div className="proof-grid">
+        <div className="proof-grid" data-reveal>
           {t.proof.map(([icon, eyebrow, title, text]) => (
             <article className="proof-card" key={title}>
               <div className="proof-icon"><SiteIcon name={icon as IconName} size={24} /></div>
@@ -482,13 +568,13 @@ export default function Home() {
       </section>
 
       <section className="section" id="features">
-        <div className="section-heading">
+        <div className="section-heading" data-reveal>
           <span className="section-label">{t.featureLabel}</span>
           <h2>{t.featureTitle}</h2>
           <p>{t.featureLead}</p>
         </div>
 
-        <div className="feature-grid">
+        <div className="feature-grid" data-reveal>
           <article className="feature-card feature-sequence">
             <div className="feature-copy">
               <div className="feature-icon"><SiteIcon name="workflow" size={28} /></div>
@@ -526,12 +612,12 @@ export default function Home() {
 
       <section className="actions-section" id="actions">
         <div className="section">
-          <div className="section-heading actions-heading">
+          <div className="section-heading actions-heading" data-reveal>
             <span className="section-label">{t.actionsLabel}</span>
             <h2>{t.actionsTitle}</h2>
             <p>{t.actionsLead}</p>
           </div>
-          <div className="action-explorer">
+          <div className="action-explorer" data-reveal>
             <div className="action-picker" role="list" aria-label={t.actionsTitle}>
               {guides.map((action) => (
                 <button
@@ -573,18 +659,18 @@ export default function Home() {
       </section>
 
       <section className="section steps-section" id="how-it-works">
-        <div className="section-heading">
+        <div className="section-heading" data-reveal>
           <span className="section-label">{t.howLabel}</span>
           <h2>{t.howTitle}</h2>
         </div>
-        <div className="steps">
+        <div className="steps" data-reveal>
           {t.steps.map(([number, title, text]) => (
             <article key={number} data-step={number}><h3>{title}</h3><p>{text}</p></article>
           ))}
         </div>
       </section>
 
-      <section className="privacy-section" id="privacy">
+      <section className="privacy-section" id="privacy" data-reveal>
         <div className="privacy-visual">
           <div className="privacy-ring ring-one" /><div className="privacy-ring ring-two" />
           <SiteIcon name="fingerprint" size={54} />
@@ -600,18 +686,18 @@ export default function Home() {
       </section>
 
       <section className="section faq-section" id="faq">
-        <div className="section-heading">
+        <div className="section-heading" data-reveal>
           <span className="section-label">{t.faqLabel}</span>
           <h2>{t.faqTitle}</h2>
         </div>
-        <div className="faq-list">
+        <div className="faq-list" data-reveal>
           {t.faq.map(([question, answer]) => (
             <FaqItem key={question} question={question} answer={answer} />
           ))}
         </div>
       </section>
 
-      <section className="cta">
+      <section className="cta" data-reveal>
         <img src="/logo.png" alt="" width="64" height="64" />
         <h2>{t.ctaTitle}</h2>
         <p>{t.ctaText}</p>
