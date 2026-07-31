@@ -64,7 +64,8 @@ test("server-renders the FingerprintLauncher landing page", async () => {
   assert.match(html, /href="\/releases"/);
   assert.match(html, /https:\/\/fingerprint-launcher\.com\//);
   assert.match(html, /\/og\.png/);
-  assert.match(html, /favicon-fingerprint-v2\.png/);
+  assert.match(html, /rel="icon" href="https:\/\/fingerprint-launcher\.com\/logo\.png"/);
+  assert.doesNotMatch(html, /favicon-fingerprint-v2\.png/);
   assert.match(html, /SoftwareApplication/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
@@ -97,6 +98,7 @@ test("server-renders the synchronized release history", async () => {
   assert.match(html, /Automatically synchronized from the official GitHub repository/);
   assert.match(html, /FingerprintLauncher v1\.0\.0/);
   assert.match(html, /Release notes/);
+  assert.match(html, /<h2>Highlights<\/h2>/);
   assert.match(html, /Create and manage multiple fingerprint profiles/);
   assert.match(html, /Download installer/);
   assert.match(html, /FingerprintLauncher_Setup_1\.0\.0\.exe/);

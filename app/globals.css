@@ -1354,18 +1354,80 @@ footer a:hover { color: var(--blue); }
   background: #7f9fce;
 }
 .release-notes::-webkit-scrollbar-thumb:hover { background: #527bb9; }
+.release-notes h1,
+.release-notes h2,
 .release-notes h3 {
   margin: 30px 0 12px;
   color: #152b53;
   font-size: 20px;
   letter-spacing: -.025em;
 }
+.release-notes h1 { font-size: 24px; }
+.release-notes h2 { font-size: 21px; }
+.release-notes h1:first-child,
+.release-notes h2:first-child,
 .release-notes h3:first-child { margin-top: 0; }
 .release-notes h4 { margin: 22px 0 9px; color: #294f8d; font-size: 14px; }
 .release-notes p { margin: 0 0 17px; }
 .release-notes ul,
 .release-notes ol { margin: 0 0 20px; padding-left: 21px; }
 .release-notes li + li { margin-top: 7px; }
+.release-notes a {
+  color: #1763db;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-color: rgba(23,99,219,.35);
+  text-underline-offset: 3px;
+}
+.release-notes a:hover { text-decoration-color: currentColor; }
+.release-notes strong { color: #203d6c; font-weight: 750; }
+.release-notes blockquote {
+  margin: 18px 0;
+  padding: 12px 16px;
+  border-left: 3px solid #4483e8;
+  color: #49678f;
+  background: #f0f5fd;
+}
+.release-notes blockquote p:last-child { margin-bottom: 0; }
+.release-notes code {
+  padding: 2px 6px;
+  border: 1px solid #d8e3f1;
+  border-radius: 6px;
+  color: #174f9e;
+  background: #eef4fc;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: .88em;
+}
+.release-notes pre {
+  max-width: 100%;
+  margin: 18px 0;
+  padding: 16px;
+  border-radius: 12px;
+  overflow-x: auto;
+  color: #dce9ff;
+  background: #091d40;
+}
+.release-notes pre code {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+}
+.release-notes table {
+  width: 100%;
+  margin: 18px 0 22px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.release-notes th,
+.release-notes td {
+  padding: 10px 12px;
+  border: 1px solid #d8e3f1;
+  text-align: left;
+}
+.release-notes th { color: #173c75; background: #edf4ff; }
+.release-notes hr { margin: 28px 0; border: 0; border-top: 1px solid #d8e3f1; }
+.release-notes input[type="checkbox"] { margin-right: 7px; accent-color: var(--blue); }
 
 @media (max-width: 1080px) {
   .site-header { grid-template-columns: auto 1fr auto; }

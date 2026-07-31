@@ -1,7 +1,9 @@
 "use client";
 
-import { Fragment, useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { SiteIcon } from "../icons";
 import {
   FALLBACK_RELEASE,
@@ -49,61 +51,14 @@ const copy = {
   },
 } as const;
 
-function plainInline(text: string): string {
-  return text.replace(/\*\*/g, "").replace(/`/g, "");
-}
-
 function ReleaseNotes({ notes }: { notes: string }) {
-  const blocks = notes
-    .replace(/\r\n?/g, "\n")
-    .split(/\n{2,}/)
-    .map((block) => block.trim())
-    .filter(Boolean);
-  const rendered: ReactNode[] = [];
-
-  blocks.forEach((block, index) => {
-    const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
-    const key = `${index}-${lines[0]}`;
-
-    if (lines[0].startsWith("# ")) return;
-    if (lines.length === 1 && lines[0].startsWith("## ")) {
-      rendered.push(<h3 key={key}>{plainInline(lines[0].slice(3))}</h3>);
-      return;
-    }
-    if (lines.length === 1 && lines[0].startsWith("### ")) {
-      rendered.push(<h4 key={key}>{plainInline(lines[0].slice(4))}</h4>);
-      return;
-    }
-    if (lines.every((line) => line.startsWith("- "))) {
-      rendered.push(
-        <ul key={key}>
-          {lines.map((line) => <li key={line}>{plainInline(line.slice(2))}</li>)}
-        </ul>,
-      );
-      return;
-    }
-    if (lines.every((line) => /^\d+\.\s/.test(line))) {
-      rendered.push(
-        <ol key={key}>
-          {lines.map((line) => <li key={line}>{plainInline(line.replace(/^\d+\.\s/, ""))}</li>)}
-        </ol>,
-      );
-      return;
-    }
-
-    rendered.push(
-      <p key={key}>
-        {lines.map((line, lineIndex) => (
-          <Fragment key={`${key}-${lineIndex}`}>
-            {lineIndex > 0 && <br />}
-            {plainInline(line)}
-          </Fragment>
-        ))}
-      </p>,
-    );
-  });
-
-  return <div className="release-notes">{rendered}</div>;
+  return (
+    <div className="release-notes">
+      <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>
+        {notes}
+      </ReactMarkdown>
+    </div>
+  );
 }
 
 export default function ReleasesPage() {
