@@ -136,3 +136,11 @@ test("redirects HTTP and www traffic to the canonical HTTPS origin", async () =>
   );
   assert.equal(response.headers.get("x-content-type-options"), "nosniff");
 });
+
+test("keeps the local development preview on HTTP", async () => {
+  const response = await render("http://localhost/");
+
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Your fingerprint\./);
+});

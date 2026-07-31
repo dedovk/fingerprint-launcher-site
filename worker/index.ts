@@ -68,8 +68,9 @@ function withSecurityHeaders(response: Response): Response {
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+    const isLocalPreview = url.hostname === "localhost" || url.hostname === "127.0.0.1";
 
-    if (url.protocol === "http:" || url.hostname === "www.fingerprint-launcher.com") {
+    if (!isLocalPreview && (url.protocol === "http:" || url.hostname === "www.fingerprint-launcher.com")) {
       url.protocol = "https:";
       url.hostname = "fingerprint-launcher.com";
       return withSecurityHeaders(Response.redirect(url.toString(), 308));

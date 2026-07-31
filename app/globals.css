@@ -40,6 +40,7 @@ html.action-transition::view-transition-new(root) {
 }
 
 * { box-sizing: border-box; }
+a, button { -webkit-tap-highlight-color: transparent; }
 html {
   max-width: 100%;
   overflow-x: clip;
@@ -167,6 +168,7 @@ main {
   box-shadow: 0 5px 14px rgba(33,101,232,.25);
 }
 .menu-button {
+  position: relative;
   width: 42px;
   height: 42px;
   padding: 0;
@@ -175,19 +177,24 @@ main {
   display: none;
   place-items: center;
   background: white;
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 .menu-button span {
   position: absolute;
+  left: 50%;
+  top: 50%;
   width: 17px;
   height: 1.5px;
   border-radius: 2px;
   background: var(--ink);
   transition: transform .2s;
 }
-.menu-button span:first-child { transform: translateY(-3px); }
-.menu-button span:last-child { transform: translateY(3px); }
-.menu-button[aria-expanded="true"] span:first-child { transform: rotate(45deg); }
-.menu-button[aria-expanded="true"] span:last-child { transform: rotate(-45deg); }
+.menu-button span:first-child { transform: translate(-50%, calc(-50% - 3px)); }
+.menu-button span:last-child { transform: translate(-50%, calc(-50% + 3px)); }
+.menu-button[aria-expanded="true"] span:first-child { transform: translate(-50%, -50%) rotate(45deg); }
+.menu-button[aria-expanded="true"] span:last-child { transform: translate(-50%, -50%) rotate(-45deg); }
 
 .hero {
   width: min(1240px, calc(100% - 48px));
@@ -886,6 +893,10 @@ main {
   position: relative;
   width: 92px;
   height: 92px;
+  min-width: 92px;
+  aspect-ratio: 1;
+  justify-self: start;
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
 }
@@ -1417,7 +1428,7 @@ footer a:hover { color: var(--blue); }
   line-height: 1.72;
 }
 .release-sync {
-  width: max-content;
+  width: fit-content;
   max-width: 100%;
   margin: 25px auto 0;
   padding: 9px 13px;
@@ -1433,6 +1444,7 @@ footer a:hover { color: var(--blue); }
   line-height: 1.4;
   text-transform: uppercase;
 }
+.release-sync .status-dot { align-self: center; }
 .release-list {
   width: min(1080px, calc(100% - 48px));
   margin: 0 auto;
@@ -1752,7 +1764,7 @@ footer a:hover { color: var(--blue); }
     gap: 28px;
     overflow: hidden;
   }
-  .privacy-section > div { width: 100%; }
+  .privacy-section > div:not(.privacy-visual) { width: 100%; }
   .privacy-section h2,
   .privacy-section p {
     max-width: 100%;
@@ -1762,7 +1774,12 @@ footer a:hover { color: var(--blue); }
     font-size: clamp(28px, 7.8vw, 34px);
     letter-spacing: -.04em;
   }
-  .privacy-visual { width: 72px; height: 72px; }
+  .privacy-visual {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    aspect-ratio: 1;
+  }
   .privacy-section .button {
     grid-column: auto;
     width: 100%;
@@ -1811,7 +1828,15 @@ footer a:hover { color: var(--blue); }
   .releases-hero { padding: 62px 0 48px; }
   .releases-hero h1 { font-size: clamp(42px, 12vw, 58px); }
   .releases-hero > p { font-size: 15px; }
-  .release-sync { align-items: flex-start; text-align: left; }
+  .release-sync {
+    width: fit-content;
+    padding: 10px 12px;
+    border-radius: 16px;
+    align-items: center;
+    text-align: left;
+    font-size: 9px;
+    line-height: 1.5;
+  }
   .release-entry { border-radius: 20px; }
   .release-entry-meta { padding: 27px 24px; }
   .release-entry-meta h2 { font-size: 24px; }
@@ -1827,6 +1852,20 @@ footer a:hover { color: var(--blue); }
   .resource-section h2 { font-size: 23px; }
   .resource-contact { grid-template-columns: 1fr; padding: 23px; }
   .resource-contact .button { width: 100%; white-space: normal; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .button:hover,
+  .action-choice:hover { transform: none; }
+  .button:hover > svg,
+  .button-primary:hover > svg { transform: none; }
+  .button-primary:hover::before { transform: translateX(-125%); }
+  .product-stage:hover .real-screen {
+    box-shadow: 0 34px 75px rgba(16,54,119,.25), 0 5px 16px rgba(20,56,120,.12);
+  }
+  .product-stage:hover .real-screen::after { opacity: 0; }
+  .action-choice:active { background: rgba(40,105,220,.14); }
+  .button:active { transform: scale(.985); }
 }
 
 @media (prefers-reduced-motion: reduce) {
