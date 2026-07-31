@@ -6,10 +6,15 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { flushSync } from "react-dom";
 import { SiteIcon, type IconName } from "./icons";
 import { FALLBACK_RELEASE, fetchLatestRelease, type ReleaseInfo } from "./release";
 
 type Language = "en" | "uk";
+
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => { finished: Promise<unknown> };
+};
 
 const content = {
   en: {
@@ -489,6 +494,25 @@ export default function Home() {
     event.currentTarget.style.removeProperty("--glow-y");
   };
 
+  const selectAction = (actionId: string) => {
+    if (actionId === selectedAction.id) return;
+
+    const transitionDocument = document as ViewTransitionDocument;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const updateAction = () => flushSync(() => setSelectedActionId(actionId));
+
+    if (!transitionDocument.startViewTransition || reducedMotion) {
+      updateAction();
+      return;
+    }
+
+    document.documentElement.classList.add("action-transition");
+    const transition = transitionDocument.startViewTransition(updateAction);
+    transition.finished.finally(() => {
+      document.documentElement.classList.remove("action-transition");
+    });
+  };
+
   return (
     <main>
       <header className={`site-header${headerScrolled ? " is-scrolled" : ""}${headerHidden ? " is-hidden" : ""}`}>
@@ -625,7 +649,7 @@ export default function Home() {
                   role="listitem"
                   key={action.id}
                   className={selectedAction.id === action.id ? "action-choice active" : "action-choice"}
-                  onClick={() => setSelectedActionId(action.id)}
+                  onClick={() => selectAction(action.id)}
                 >
                   <span className="action-choice-icon"><SiteIcon name={action.icon} size={21} /></span>
                   <span><strong>{action.title}</strong><small>{action.category}</small></span>

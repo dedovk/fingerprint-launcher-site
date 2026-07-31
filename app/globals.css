@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) {
+  animation: pageTransitionOut .18s ease both;
+}
+::view-transition-new(root) {
+  animation: pageTransitionIn .42s cubic-bezier(.2,.75,.25,1) both;
+}
+html.action-transition::view-transition-old(root),
+html.action-transition::view-transition-new(root) {
+  animation: none;
+}
+@keyframes pageTransitionOut {
+  to { opacity: .72; transform: translateY(-5px); }
+}
+@keyframes pageTransitionIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 :root {
   --ink: #0b1530;
   --muted: #5f6b85;
@@ -86,6 +106,8 @@ main {
   font-weight: 650;
   letter-spacing: -.025em;
 }
+.site-header .brand,
+.download-header .brand { view-transition-name: site-brand; }
 .brand img {
   border-radius: 10px;
   box-shadow: 0 8px 22px rgba(20,91,225,.22);
@@ -646,6 +668,7 @@ main {
 .action-picker::-webkit-scrollbar { width: 5px; }
 .action-picker::-webkit-scrollbar-thumb { border-radius: 999px; background: #275292; }
 .action-choice {
+  position: relative;
   width: 100%;
   min-height: 74px;
   padding: 11px 14px;
@@ -661,12 +684,27 @@ main {
   cursor: pointer;
   transition: border-color .2s ease, border-radius .2s ease, background .2s ease, transform .2s ease;
 }
+.action-choice::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 16px;
+  bottom: 16px;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: #4b91ff;
+  box-shadow: 0 0 14px rgba(75,145,255,.5);
+  opacity: 0;
+  transform: scaleY(.25);
+  transition: opacity .25s ease, transform .38s cubic-bezier(.22,.8,.28,1);
+}
 .action-choice:hover { background: rgba(40,105,220,.09); transform: translateX(3px); }
 .action-choice.active {
   border-color: #2b5da9;
   border-radius: 14px;
   background: linear-gradient(135deg, rgba(32,93,194,.26), rgba(21,55,112,.22));
 }
+.action-choice.active::before { opacity: 1; transform: scaleY(1); }
 .action-choice-icon {
   width: 38px;
   height: 38px;
@@ -723,6 +761,35 @@ main {
   place-items: center;
   color: #286ee2;
   background: #eaf2ff;
+}
+@supports (view-transition-name: action-guide) {
+  .action-guide {
+    view-transition-name: action-guide;
+    animation: none;
+  }
+  .guide-icon { view-transition-name: action-guide-icon; }
+
+  ::view-transition-group(action-guide) {
+    animation-duration: .42s;
+    animation-timing-function: cubic-bezier(.22,.8,.28,1);
+  }
+  ::view-transition-old(action-guide) {
+    animation: actionGuideOut .18s ease both;
+  }
+  ::view-transition-new(action-guide) {
+    animation: actionGuideIn .4s cubic-bezier(.22,.8,.28,1) both;
+  }
+  ::view-transition-group(action-guide-icon) {
+    animation-duration: .46s;
+    animation-timing-function: cubic-bezier(.2,.8,.25,1);
+  }
+}
+@keyframes actionGuideOut {
+  to { opacity: 0; transform: translateY(-7px) scale(.992); }
+}
+@keyframes actionGuideIn {
+  from { opacity: 0; transform: translateY(13px) scale(.992); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .action-guide h3 { margin: 25px 0 11px; font-size: 30px; letter-spacing: -.04em; }
 .guide-description { margin: 0; color: #5c6e8b; font-size: 14px; line-height: 1.7; }
@@ -1763,7 +1830,12 @@ footer a:hover { color: var(--blue); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
   html { scroll-behavior: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(action-guide),
+  ::view-transition-new(action-guide) { animation: none !important; }
   *, *::before, *::after {
     animation: none !important;
     scroll-behavior: auto !important;
